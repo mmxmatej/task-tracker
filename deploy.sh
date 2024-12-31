@@ -9,6 +9,11 @@ else
   echo "Directory /home/deployuser/task-tracker already exists."
 fi
 
+# Set correct permissions for deployuser (assuming deployuser is the user running the script)
+echo "Setting correct permissions for deployuser on /home/deployuser/task-tracker..."
+sudo chown -R deployuser:deployuser /home/deployuser/task-tracker
+sudo chmod -R 755 /home/deployuser/task-tracker
+
 # Update and install Python
 sudo apt-get update
 sudo apt-get install -y python3 python3-pip
