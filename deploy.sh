@@ -1,31 +1,33 @@
 #!/bin/bash
 set -e
 
-# Ensure the target directory exists
-mkdir -p /home/deployuser/task-tracker
+# Directory where the app will be cloned
+APP_DIR="/home/deployuser/simple-python-app"
 
-# Set correct permissions
-sudo chown -R deployuser:deployuser /home/deployuser/task-tracker
+# Ensure the target directory exists
+echo "Creating directory $APP_DIR"
+mkdir -p $APP_DIR
+
+# Set correct permissions for deployuser
+echo "Setting permissions for deployuser"
+sudo chown -R deployuser:deployuser $APP_DIR
 
 # Clone the repository
 echo "Cloning the repository from GitHub..."
-git clone https://$GitHubUsername:$GitHubToken@github.com/$GitHubUsername/task-tracker.git /home/deployuser/task-tracker
+git clone https://$GitHubUsername:$GitHubToken@github.com/$GitHubUsername/simple-python-app.git $APP_DIR
 
-# Navigate to the cloned directory
-cd /home/deployuser/task-tracker
+# Navigate to the app directory
+cd $APP_DIR
 
-# List the files in the cloned repository to ensure they are there
-echo "Listing files in the repository:"
-ls -alh
+# Install Python 3 and Flask
+echo "Installing dependencies..."
+sudo apt-get update
+sudo apt-get install -y python3 python3-pip
+pip3 install flask
 
-# Check if app.py and requirements.txt are present
-if [ -f "app.py" ] && [ -f "requirements.txt" ]; then
-    echo "Files found: app.py and requirements.txt"
-else
-    echo "Files not found. Exiting..."
-    exit 1
-fi
+# Run the app on port 80
+echo "Running the Python app on port 80..."
+# Use sudo to run the app on port 80 (requires root access)
+sudo nohup python3 app.py > app.log 2>&1 &
 
-# Run the application (adjust this to your app's start command)
-nohup python3 app.py > app.log 2>&1 &
-echo "Task tracker app deployed and running."
+echo "Python app deployed and running on port 80."
