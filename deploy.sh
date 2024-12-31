@@ -1,6 +1,14 @@
 #!/bin/bash
 set -e
 
+# Check if the task-tracker directory exists, and create it if not
+if [ ! -d "/home/deployuser/task-tracker" ]; then
+  echo "Directory /home/deployuser/task-tracker does not exist. Creating it."
+  mkdir -p /home/deployuser/task-tracker
+else
+  echo "Directory /home/deployuser/task-tracker already exists."
+fi
+
 # Update and install Python
 sudo apt-get update
 sudo apt-get install -y python3 python3-pip
