@@ -14,7 +14,7 @@ sudo chown -R deployuser:deployuser $APP_DIR
 
 # Clone the repository
 echo "Cloning the repository from GitHub..."
-git clone https://mmxmatej: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@github.com/mmxmatej/task-tracker.git $APP_DIR
+git clone https://mmxmatej:/$GitHubUsername:$GitHubToken@github.com/$GitHubUsername@github.com/mmxmatej/task-tracker.git $APP_DIR
 
 # Navigate to the app directory
 cd $APP_DIR
