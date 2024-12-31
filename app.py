@@ -1,10 +1,11 @@
-import http.server
-import socketserver
+from flask import Flask
 
-PORT = 80
+app = Flask(__name__)
 
-Handler = http.server.SimpleHTTPRequestHandler
+@app.route('/')
+def home():
+    return "Hello, Octopus Deploy!"
 
-with socketserver.TCPServer(("", PORT), Handler) as httpd:
-    print(f"Serving at port {PORT}")
-    httpd.serve_forever()
+if __name__ == "__main__":
+    # Change the port to 80
+    app.run(host='0.0.0.0', port=80)
