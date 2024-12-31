@@ -2,7 +2,7 @@
 set -e
 
 # Directory where the app will be cloned
-APP_DIR="/home/deployuser/simple-python-app"
+APP_DIR="/home/deployuser/task-tracker"
 
 # Ensure the target directory exists
 echo "Creating directory $APP_DIR"
@@ -14,7 +14,7 @@ sudo chown -R deployuser:deployuser $APP_DIR
 
 # Clone the repository
 echo "Cloning the repository from GitHub..."
-git clone https://$GitHubUsername:$GitHubToken@github.com/$GitHubUsername/simple-python-app.git $APP_DIR
+git clone https://$GitHubUsername:$GitHubToken@github.com/$GitHubUsername/task-tracker.git $APP_DIR
 
 # Navigate to the app directory
 cd $APP_DIR
