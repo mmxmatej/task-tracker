@@ -25,7 +25,7 @@ fi
 # Clone the Git repository (if it isn't already cloned)
 if [ ! -d "/home/deployuser/task-tracker/.git" ]; then
   echo "Cloning the repository from Git..."
-  git clone https://$GitUsername:$GitToken@github.com/username/repo.git /home/deployuser/task-tracker
+  git clone https://$OctopusGitUsername:$OctopusGitToken@github.com/$GitHubUsername/task-tracker.git /home/deployuser/task-tracker
 else
   echo "Repository already cloned."
 fi
@@ -33,9 +33,12 @@ fi
 # Navigate to the deployment directory
 cd /home/deployuser/task-tracker
 
+# Checkout to the 'main' branch (in case it's not already there)
+git checkout main
+
 # Run the application in the background
 nohup python3 app.py > app.log 2>&1 &
-echo "Simple Python app deployed and running on port 80."
+echo "Simple Python app deployed and running."
 
 # Ensure app is listening on port 80
 sleep 5
