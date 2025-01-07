@@ -1,33 +1,36 @@
 #!/bin/bash
-set -e
 
-# Directory where the app will be cloned
-APP_DIR="/home/deployuser/task-tracker"
+# Define variables
+APP_DIR="/var/www/system-info-app"
+PYTHON_ENV_DIR="$APP_DIR/venv"
 
-# Ensure the target directory exists
-echo "Creating directory $APP_DIR"
-mkdir -p $APP_DIR
+# Create application directory if it doesn't exist
+if [ ! -d "$APP_DIR" ]; then
+  sudo mkdir -p "$APP_DIR"
+  echo "Created application directory at $APP_DIR"
+fi
 
-# Set correct permissions for deployuser
-echo "Setting permissions for deployuser"
-sudo chown -R deployuser:deployuser $APP_DIR
+# Copy application files to the target directory
+sudo cp -r * "$APP_DIR"
+cd "$APP_DIR"
 
-# Clone the repository
-echo "Cloning the repository from GitHub..."
-git clone https://mmxmatej:$GitHubToken@github.com/mmxmatej/task-tracker.git $APP_DIR
+# Set up Python virtual environment if it doesn't exist
+if [ ! -d "$PYTHON_ENV_DIR" ]; then
+  python3 -m venv "$PYTHON_ENV_DIR"
+  echo "Created Python virtual environment"
+fi
 
-# Navigate to the app directory
-cd $APP_DIR
+# Activate virtual environment
+source "$PYTHON_ENV_DIR/bin/activate"
 
-# Install Python 3 and Flask
-echo "Installing dependencies..."
-sudo apt-get update
-sudo apt-get install -y python3 python3-pip
-pip3 install flask
+# Install necessary dependencies
+pip install --upgrade pip
+pip install flask psutil
 
-# Run the app on port 80
-echo "Running the Python app on port 80..."
-# Use sudo to run the app on port 80 (requires root access)
-sudo nohup python3 app.py > app.log 2>&1 &
+# Kill any app running on port 80
+sudo fuser -k 80/tcp || true
 
-echo "Python app deployed and running on port 80."
+# Start the app with elevated permissions for port 80
+sudo nohup python app.py > app.log 2>&1 &
+
+echo "System Info API is running on http://<your-server-ip>/info"
