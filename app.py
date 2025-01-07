@@ -15,4 +15,4 @@ def get_system_info():
     return jsonify(info)
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=80)  # Changed to port 80
+    app.run(host='0.0.0.0', port=5000)  # Changed to port 5000
